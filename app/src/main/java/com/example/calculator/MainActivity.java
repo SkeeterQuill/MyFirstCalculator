@@ -76,6 +76,15 @@ public class MainActivity extends AppCompatActivity {
         updateMainDisplay(0);
     }
 
+    public void btn_Decimal(View v) {
+        if(numberString.contains(".")){
+
+        }else{
+            numberString = numberString + ".";
+            mainDisplay.setText(numberString);
+        }
+    }
+
 
 
 
