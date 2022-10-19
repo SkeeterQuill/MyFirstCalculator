@@ -9,19 +9,25 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 
 
 public class MainActivity extends AppCompatActivity {
 
     TextView mainDisplay;
+    TextView calculationDisplay;
+    String calculationString = "";
     String numberString = "0";
-
+    ArrayList<Character> operatorsForCalculation = new ArrayList<>();
+    ArrayList<Float> numbersForCalculation = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mainDisplay = findViewById(R.id.mainView);
+        calculationDisplay = findViewById(R.id.calculationView);
+
     }
 
     void updateMainDisplay(int x){
@@ -31,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
 
         }
         else{
-            numberString = numberString + String.valueOf(x);
+            numberString = numberString + x;
         }
         mainDisplay.setText(numberString);
     }
@@ -85,16 +91,35 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public void btn_Negate(View v){
 
+        char ch = numberString.charAt(0);
+        StringBuilder numStr = new StringBuilder(numberString);
+
+        if(numberString.equals("0")){
+
+        }else if (ch == '-') {
+            numStr.deleteCharAt(0);
+            numberString = numStr.toString();
+        }else{
+            numberString = "-" + numberString;
+        }
+
+        mainDisplay.setText(numberString);
+    }
 
 
     public void btn_Backspace(View v) {
+        char ch = numberString.charAt(0);
 
         if(numberString.length() == 1){
             numberString = "0";
             mainDisplay.setText(numberString);
 
 
+        }else if(numberString.length() == 2 && ch == '-'){
+            numberString = "0";
+            mainDisplay.setText(numberString);
         }else if(numberString.length() > 1){
             StringBuilder numberS = new StringBuilder(numberString);
 
@@ -111,10 +136,37 @@ public class MainActivity extends AppCompatActivity {
             mainDisplay.setText(numberString);
         }
 
+    }
 
+    public void btn_Clear(View v){
+        numbersForCalculation.clear();
+        numberString = "0";
+        mainDisplay.setText(numberString);
+    }
 
+    public void operatorClicked(char operator){
+        numbersForCalculation.add(Float.parseFloat(numberString));
+        operatorsForCalculation.add(operator);
+        calculationString = calculationString + numberString + " " + operator + " ";
+        mainDisplay.setText(numberString);
+        calculationDisplay.setText(calculationString);
+        numberString = "0";
+    }
 
+    public void btn_Addition(View v){
+        operatorClicked('+');
+    }
 
+    public void btn_Subtract(View v){
+        operatorClicked('-');
+    }
+
+    public void btn_Multiply(View v){
+        operatorClicked('x');
+    }
+
+    public void btn_Divide(View v){
+        operatorClicked('/');
     }
 
 }

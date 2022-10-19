@@ -12,9 +12,22 @@
         android:layout_height="71dp"
         android:layout_marginStart="20dp"
         android:layout_marginBottom="20dp"
-        android:text="Back"
         android:onClick="btn_Backspace"
+        android:text="Back"
         app:layout_constraintBottom_toTopOf="@+id/buttonNo7"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/buttonClear"
+        android:layout_width="75dp"
+        android:layout_height="71dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginBottom="20dp"
+        android:backgroundTint="#F30808"
+        android:onClick="btn_Clear"
+        android:text="C"
+
+        app:layout_constraintBottom_toTopOf="@+id/buttonBackspace"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
@@ -23,6 +36,7 @@
         android:layout_height="71dp"
         android:layout_marginStart="20dp"
         android:layout_marginBottom="20dp"
+        android:onClick="btn_Multiply"
         android:text="*"
         app:layout_constraintBottom_toTopOf="@+id/buttonNo8"
         app:layout_constraintStart_toEndOf="@+id/buttonBackspace" />
@@ -33,6 +47,7 @@
         android:layout_height="71dp"
         android:layout_marginStart="20dp"
         android:layout_marginBottom="20dp"
+        android:onClick="btn_Divide"
         android:text="/"
         app:layout_constraintBottom_toTopOf="@+id/buttonNo9"
         app:layout_constraintStart_toEndOf="@+id/buttonMultiply" />
@@ -133,6 +148,7 @@
         android:layout_height="71dp"
         android:layout_marginStart="20dp"
         android:layout_marginBottom="44dp"
+        android:onClick="btn_Negate"
         android:text="+/-"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -198,6 +214,7 @@
         android:layout_height="164dp"
         android:layout_marginEnd="24dp"
         android:layout_marginBottom="20dp"
+        android:onClick="btn_Addition"
         android:text="+"
         app:layout_constraintBottom_toTopOf="@+id/buttonEquals"
         app:layout_constraintEnd_toEndOf="parent" />
@@ -218,6 +235,7 @@
         android:layout_height="71dp"
         android:layout_marginEnd="24dp"
         android:layout_marginBottom="20dp"
+        android:onClick="btn_Subtract"
         android:text="-"
         app:layout_constraintBottom_toTopOf="@+id/buttonNo9"
         app:layout_constraintEnd_toEndOf="parent" />
