@@ -14,7 +14,7 @@ import java.nio.charset.StandardCharsets;
 public class MainActivity extends AppCompatActivity {
 
     TextView mainDisplay;
-    String numberString = "";
+    String numberString = "0";
 
 
     @Override
