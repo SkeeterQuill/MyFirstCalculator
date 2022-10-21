@@ -30,9 +30,9 @@ public class MainActivity extends AppCompatActivity {
         calculationDisplay = findViewById(R.id.calculationView);
 
     }
-
+    // method for each numbered button
     void updateMainDisplay(int x){
-        if (calcComplete == true){
+        if (calcComplete){
             numberString = String.valueOf(x);
             calcComplete = false;
             calculationDisplay.setText("");
@@ -218,7 +218,7 @@ public class MainActivity extends AppCompatActivity {
         numbersForCalculation.clear();
         operatorsForCalculation.clear();
         numberString = calculationResult;
-        calculationResult = "";
+        //calculationResult = "";
         calcComplete = true;
 
     }
