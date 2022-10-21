@@ -9,29 +9,40 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 
 
 public class MainActivity extends AppCompatActivity {
 
     TextView mainDisplay;
+    TextView calculationDisplay;
+    String calculationString = "";
     String numberString = "0";
-
+    ArrayList<Character> operatorsForCalculation = new ArrayList<>();
+    ArrayList<Float> numbersForCalculation = new ArrayList<>();
+    boolean calcComplete = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mainDisplay = findViewById(R.id.mainView);
+        calculationDisplay = findViewById(R.id.calculationView);
+
     }
 
     void updateMainDisplay(int x){
-        if(numberString.equals("0")){
+        if (calcComplete == true){
+            numberString = String.valueOf(x);
+            calcComplete = false;
+            calculationDisplay.setText("");
+        }else if(numberString.equals("0")){
             numberString = String.valueOf(x);
         }else if(numberString.length() >= 11){
 
         }
         else{
-            numberString = numberString + String.valueOf(x);
+            numberString = numberString + x;
         }
         mainDisplay.setText(numberString);
     }
@@ -85,16 +96,35 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public void btn_Negate(View v){
 
+        char ch = numberString.charAt(0);
+        StringBuilder numStr = new StringBuilder(numberString);
+
+        if(numberString.equals("0")){
+
+        }else if (ch == '-') {
+            numStr.deleteCharAt(0);
+            numberString = numStr.toString();
+        }else{
+            numberString = "-" + numberString;
+        }
+
+        mainDisplay.setText(numberString);
+    }
 
 
     public void btn_Backspace(View v) {
+        char ch = numberString.charAt(0);
 
         if(numberString.length() == 1){
             numberString = "0";
             mainDisplay.setText(numberString);
 
 
+        }else if(numberString.length() == 2 && ch == '-'){
+            numberString = "0";
+            mainDisplay.setText(numberString);
         }else if(numberString.length() > 1){
             StringBuilder numberS = new StringBuilder(numberString);
 
@@ -111,9 +141,85 @@ public class MainActivity extends AppCompatActivity {
             mainDisplay.setText(numberString);
         }
 
+    }
+
+    public void btn_Clear(View v){
+        numbersForCalculation.clear();
+        numberString = "0";
+        mainDisplay.setText(numberString);
+        calculationDisplay.setText("");
+    }
+
+    public void operatorClicked(char operator){
+        numbersForCalculation.add(Float.parseFloat(numberString));
+        operatorsForCalculation.add(operator);
+        calculationString = calculationString + numberString + " " + operator + " ";
+        mainDisplay.setText(numberString);
+        calculationDisplay.setText(calculationString);
+        numberString = "0";
+    }
+
+    public void btn_Addition(View v){
+        operatorClicked('+');
+        calcComplete = false;
+    }
+
+    public void btn_Subtract(View v){
+        operatorClicked('-');
+        calcComplete = false;
+    }
+
+    public void btn_Multiply(View v){
+        operatorClicked('*');
+        calcComplete = false;
+    }
+
+    public void btn_Divide(View v){
+        operatorClicked('/');
+        calcComplete = false;
+    }
+
+    public void btn_Equals(View v){
+        numbersForCalculation.add(Float.parseFloat(numberString));
+        Float prosNumber = numbersForCalculation.get(0);
+        calculationString = calculationString + numberString + " " + '=' + " ";
+
+        for(int i = 1; i < numbersForCalculation.size();i++){
+
+            if(operatorsForCalculation.get(0) == '+'){
+                prosNumber = prosNumber + numbersForCalculation.get(i);
+            }else if(operatorsForCalculation.get(0) == '-'){
+                prosNumber = prosNumber - numbersForCalculation.get(i);
+            }else if(operatorsForCalculation.get(0) == '/'){
+                prosNumber = prosNumber / numbersForCalculation.get(i);
+            }else if(operatorsForCalculation.get(0) == '*'){
+                prosNumber = prosNumber * numbersForCalculation.get(i);
+            }else{
+
+            }
+
+            operatorsForCalculation.remove(0);
 
 
+        }
+        float intTest;
 
+        intTest = prosNumber - prosNumber.intValue();
+        String calculationResult;
+        if(intTest == 0) {
+
+            calculationResult = String.valueOf(prosNumber.intValue());
+        }else{
+            calculationResult = String.valueOf(prosNumber);
+        }
+        mainDisplay.setText(calculationResult);
+        calculationDisplay.setText(calculationString);
+        calculationString = "";
+        numbersForCalculation.clear();
+        operatorsForCalculation.clear();
+        numberString = calculationResult;
+        calculationResult = "";
+        calcComplete = true;
 
     }
 
