@@ -14,13 +14,14 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
-    TextView mainDisplay;
+    static TextView mainDisplay;
     TextView calculationDisplay;
     String calculationString = "";
     String numberString = "0";
     ArrayList<Character> operatorsForCalculation = new ArrayList<>();
     ArrayList<Float> numbersForCalculation = new ArrayList<>();
-    boolean calcComplete = false;
+    static boolean calcComplete = false;
+    static boolean error = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +40,8 @@ public class MainActivity extends AppCompatActivity {
         }else if(numberString.equals("0")){
             numberString = String.valueOf(x);
         }else if(numberString.length() >= 11){
-
+            Toast toast = Toast.makeText(getApplicationContext(), "Maximum number of digits reached", Toast.LENGTH_SHORT);
+            toast.show();
         }
         else{
             numberString = numberString + x;
@@ -89,7 +91,8 @@ public class MainActivity extends AppCompatActivity {
 
     public void btn_Decimal(View v) {
         if(numberString.contains(".")){
-
+            Toast toast = Toast.makeText(getApplicationContext(), "Cannot use decimal more than once", Toast.LENGTH_SHORT);
+            toast.show();
         }else{
             numberString = numberString + ".";
             mainDisplay.setText(numberString);
@@ -102,7 +105,8 @@ public class MainActivity extends AppCompatActivity {
         StringBuilder numStr = new StringBuilder(numberString);
 
         if(numberString.equals("0")){
-
+            Toast toast = Toast.makeText(getApplicationContext(), "Cannot Negate 0", Toast.LENGTH_SHORT);
+            toast.show();
         }else if (ch == '-') {
             numStr.deleteCharAt(0);
             numberString = numStr.toString();
@@ -154,9 +158,10 @@ public class MainActivity extends AppCompatActivity {
         numbersForCalculation.add(Float.parseFloat(numberString));
         operatorsForCalculation.add(operator);
         calculationString = calculationString + numberString + " " + operator + " ";
-        mainDisplay.setText(numberString);
+
         calculationDisplay.setText(calculationString);
         numberString = "0";
+        mainDisplay.setText(numberString);
     }
 
     public void btn_Addition(View v){
@@ -184,6 +189,7 @@ public class MainActivity extends AppCompatActivity {
         Float prosNumber = numbersForCalculation.get(0);
         calculationString = calculationString + numberString + " " + '=' + " ";
 
+
         for(int i = 1; i < numbersForCalculation.size();i++){
 
             if(operatorsForCalculation.get(0) == '+'){
@@ -191,7 +197,18 @@ public class MainActivity extends AppCompatActivity {
             }else if(operatorsForCalculation.get(0) == '-'){
                 prosNumber = prosNumber - numbersForCalculation.get(i);
             }else if(operatorsForCalculation.get(0) == '/'){
-                prosNumber = prosNumber / numbersForCalculation.get(i);
+                if(numbersForCalculation.get(i) == 0.0f){
+                    Toast toast = Toast.makeText(getApplicationContext(), "Cannot Divide by Zero", Toast.LENGTH_SHORT);
+                    toast.show();
+                    //String error = "Error";
+                    //MainActivity.mainDisplay.setText(error);
+                    MainActivity.calcComplete = true;
+                    MainActivity.error = true;
+
+
+                }else {
+                    prosNumber = prosNumber / numbersForCalculation.get(i);
+                }
             }else if(operatorsForCalculation.get(0) == '*'){
                 prosNumber = prosNumber * numbersForCalculation.get(i);
             }else{
@@ -212,7 +229,12 @@ public class MainActivity extends AppCompatActivity {
         }else{
             calculationResult = String.valueOf(prosNumber);
         }
+
+        if(error){
+            mainDisplay.setText("error");
+        }else{
         mainDisplay.setText(calculationResult);
+        }
         calculationDisplay.setText(calculationString);
         calculationString = "";
         numbersForCalculation.clear();
@@ -220,6 +242,7 @@ public class MainActivity extends AppCompatActivity {
         numberString = calculationResult;
         //calculationResult = "";
         calcComplete = true;
+        error = false;
 
     }
 
