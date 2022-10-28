@@ -14,7 +14,7 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
-    static TextView mainDisplay;
+    TextView mainDisplay;
     TextView calculationDisplay;
     String calculationString = "";
     String numberString = "0";
